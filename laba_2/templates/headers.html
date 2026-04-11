@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Заголовки запроса{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h3 mb-3">Заголовки запроса</h1>
+        <div class="table-wrap">
+            <table class="table table-striped">
+                <thead><tr><th>Заголовок</th><th>Значение</th></tr></thead>
+                <tbody>
+                {% for key, value in request.headers.items() %}
+                    <tr><td>{{ key }}</td><td>{{ value }}</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

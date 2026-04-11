@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 bg-white rounded-3 shadow-sm">
+    <h1 class="display-6">Лабораторная работа №2</h1>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5 class="card-title">URL-параметры</h5>
+            <p class="card-text">Пример: <code>/url-params?name=Тимофей&amp;group=241_3211</code></p>
+            <a class="btn btn-primary" href="{{ url_for('url_params', name='Тимофей', group='241_3211') }}">Открыть</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5 class="card-title">Заголовки запроса</h5>
+            <p class="card-text">Отображает все HTTP-заголовки текущего запроса.</p>
+            <a class="btn btn-primary" href="{{ url_for('headers_page') }}">Открыть</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5 class="card-title">Cookie</h5>
+            <p class="card-text">Показывает cookie запроса и устанавливает демонстрационный cookie.</p>
+            <a class="btn btn-primary" href="{{ url_for('cookies_page') }}">Открыть</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5 class="card-title">Форма авторизации</h5>
+            <p class="card-text">После отправки логин и пароль выводятся на страницу.</p>
+            <a class="btn btn-primary" href="{{ url_for('login') }}">Открыть</a>
+        </div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5 class="card-title">Проверка телефона</h5>
+            <p class="card-text">Проверяет допустимые символы, количество цифр и нормализует номер.</p>
+            <a class="btn btn-primary" href="{{ url_for('phone') }}">Открыть</a>
+        </div></div>
+    </div>
+</div>
+{% endblock %}

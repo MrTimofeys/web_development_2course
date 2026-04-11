@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}URL-параметры{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h3 mb-3">Параметры URL</h1>
+        {% if params %}
+        <div class="table-wrap">
+            <table class="table table-striped">
+                <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
+                <tbody>
+                {% for key, value in params.items() %}
+                    <tr><td>{{ key }}</td><td>{{ value }}</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <p class="mb-0">URL-параметры отсутствуют.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
