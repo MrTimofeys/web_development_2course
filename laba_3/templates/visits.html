@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Счётчик посещений{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0 rounded-4">
+    <div class="card-body p-4">
+        <h1 class="h3 mb-3">Счётчик посещений</h1>
+        <p class="mb-0 fs-5">
+            Вы посетили эту страницу
+            <span class="badge bg-primary fs-6">{{ count }}</span>
+            раз.
+        </p>
+    </div>
+</div>
+{% endblock %}
