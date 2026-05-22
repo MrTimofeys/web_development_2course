@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Журнал посещений{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+    <h1 class="h3 mb-0">Журнал посещений</h1>
+    {% if can_view_visit_reports() %}
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-primary" href="{{ url_for('reports.pages_report') }}">Отчет по страницам</a>
+            <a class="btn btn-outline-primary" href="{{ url_for('reports.users_report') }}">Отчет по пользователям</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="table-responsive bg-white shadow-sm rounded">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-primary">
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Пользователь</th>
+            <th scope="col">Страница</th>
+            <th scope="col">Дата</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            <tr>
+                <td>{{ (page - 1) * per_page + loop.index }}</td>
+                <td>{{ user_display_name(log) }}</td>
+                <td>{{ log.path }}</td>
+                <td>{{ log.formatted_created_at }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td class="text-center py-4" colspan="4">Записи не найдены.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if pages > 1 %}
+    <nav class="mt-4" aria-label="Пагинация журнала посещений">
+        <ul class="pagination">
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('reports.index', page=page - 1) }}">Назад</a>
+            </li>
+            {% for page_number in range(1, pages + 1) %}
+                <li class="page-item {% if page_number == page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('reports.index', page=page_number) }}">{{ page_number }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item {% if page == pages %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('reports.index', page=page + 1) }}">Вперед</a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}
