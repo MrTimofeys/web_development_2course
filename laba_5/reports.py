@@ -1,7 +1,8 @@
 import csv
+from datetime import UTC, datetime
 from io import StringIO
 
-from flask import Blueprint, Response, render_template, request
+from flask import Blueprint, Response, current_app, render_template, request
 from flask_login import current_user
 
 from app import check_rights, get_db, is_admin, query_all, query_one
@@ -25,6 +26,18 @@ def visit_filter():
     return 'WHERE visit_logs.user_id = ?', (current_user.id,)
 
 
+def format_visit_created_at(value):
+    if not value:
+        return ''
+
+    parsed = datetime.fromisoformat(value)
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=UTC)
+
+    local_time = parsed.astimezone(current_app.config['TIMEZONE'])
+    return local_time.strftime('%d.%m.%Y %H:%M:%S %Z')
+
+
 @reports_bp.route('/')
 @check_rights('visit_logs')
 def index():
@@ -43,8 +56,7 @@ def index():
             users.login,
             users.last_name,
             users.first_name,
-            users.middle_name,
-            strftime('%d.%m.%Y %H:%M:%S', visit_logs.created_at) AS formatted_created_at
+            users.middle_name
         FROM visit_logs
         LEFT JOIN users ON visit_logs.user_id = users.id
         {where_sql}
@@ -62,6 +74,7 @@ def index():
         per_page=PER_PAGE,
         total=total,
         user_display_name=user_display_name,
+        format_visit_created_at=format_visit_created_at,
     )
 
 

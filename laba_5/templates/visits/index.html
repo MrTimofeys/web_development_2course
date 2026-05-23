@@ -29,7 +29,7 @@
                 <td>{{ (page - 1) * per_page + loop.index }}</td>
                 <td>{{ user_display_name(log) }}</td>
                 <td>{{ log.path }}</td>
-                <td>{{ log.formatted_created_at }}</td>
+                <td>{{ format_visit_created_at(log.created_at) }}</td>
             </tr>
         {% else %}
             <tr>

@@ -1,8 +1,10 @@
 from functools import wraps
+from datetime import datetime
 import re
 import sqlite3
 import sys
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from flask import Flask, flash, g, redirect, render_template, request, url_for
 from flask_login import LoginManager, UserMixin, current_user, login_required, login_user, logout_user
@@ -14,6 +16,7 @@ DATABASE = BASE_DIR / 'instance' / 'laba_5.sqlite'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret-key'
+app.config['TIMEZONE'] = ZoneInfo('Europe/Moscow')
 sys.modules.setdefault('app', sys.modules[__name__])
 
 login_manager = LoginManager(app)
@@ -55,6 +58,10 @@ def query_one(sql, params=()):
 
 def query_all(sql, params=()):
     return get_db().execute(sql, params).fetchall()
+
+
+def local_now():
+    return datetime.now(app.config['TIMEZONE']).isoformat(timespec='seconds')
 
 
 def init_db():
@@ -143,8 +150,12 @@ def write_visit_log():
         return
 
     get_db().execute(
-        'INSERT INTO visit_logs (path, user_id) VALUES (?, ?)',
-        (request.path[:100], int(current_user.id) if current_user.is_authenticated else None),
+        'INSERT INTO visit_logs (path, user_id, created_at) VALUES (?, ?, ?)',
+        (
+            request.path[:100],
+            int(current_user.id) if current_user.is_authenticated else None,
+            local_now(),
+        ),
     )
     get_db().commit()
 
