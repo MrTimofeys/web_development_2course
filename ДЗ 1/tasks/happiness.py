@@ -1,0 +1,6 @@
+_, _ = map(int, input().split())
+arr = list(map(int, input().split()))
+a = set(map(int, input().split()))
+b = set(map(int, input().split()))
+happiness = sum(1 if x in a else -1 if x in b else 0 for x in arr)
+print(happiness)
